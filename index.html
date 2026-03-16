@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tathagat — ML Engineer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #080c10;
+  --border: #1e2a38;
+  --accent: #00e5ff;
+  --accent2: #7c3aed;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --card: #111827;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 4rem;
+  background: rgba(8,12,16,0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+
+.hero { min-height: 100vh; display: flex; align-items: center; padding: 9rem 4rem 5rem; position: relative; z-index: 1; }
+.hero-inner { max-width: 900px; }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(0,229,255,0.07); border: 1px solid rgba(0,229,255,0.25);
+  color: var(--accent); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.45rem 1.1rem; margin-bottom: 2.2rem;
+}
+.blink { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: blink 1.2s infinite; display: inline-block; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3.2rem, 8vw, 6.5rem);
+  font-weight: 800; line-height: 0.93; letter-spacing: -0.03em; margin-bottom: 1.6rem;
+}
+.grad {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.9; max-width: 520px; margin-bottom: 2.5rem; }
+
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--accent); color: #000;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.05em;
+  padding: 0.85rem 2.2rem; border: none; text-decoration: none; display: inline-block;
+  clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(0,229,255,0.35); }
+
+.btn-ghost {
+  border: 1px solid var(--border); color: var(--text);
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;
+  padding: 0.85rem 2.2rem; text-decoration: none; display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border); }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 2.1rem; font-weight: 800; color: var(--accent); }
+.stat-label { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+
+section { padding: 6rem 4rem; position: relative; z-index: 1; }
+
+.section-label {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+.section-label::after { content: ''; width: 60px; height: 1px; background: var(--accent); opacity: 0.4; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3rem; }
+
+.skills-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1px; border: 1px solid var(--border); background: var(--border);
+}
+.skill-item { background: var(--card); padding: 1.6rem; transition: background 0.2s; }
+.skill-item:hover { background: rgba(0,229,255,0.04); }
+.skill-cat { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.8rem; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tag { font-size: 0.68rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 0.2rem 0.6rem; color: var(--text); }
+
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+.project-card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 2rem; position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.project-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+}
+.project-card:hover::before { transform: scaleX(1); }
+.project-card:hover { border-color: rgba(0,229,255,0.3); transform: translateY(-5px); }
+
+.proj-num { font-size: 0.62rem; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 1rem; }
+.proj-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+.proj-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.4rem; }
+.proj-highlights { list-style: none; margin-bottom: 1.5rem; }
+.proj-highlights li { font-size: 0.71rem; color: var(--text); padding: 0.3rem 0 0.3rem 1.1rem; position: relative; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.proj-highlights li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+.proj-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.proj-stack { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.pill { font-size: 0.58rem; background: rgba(124,58,237,0.14); border: 1px solid rgba(124,58,237,0.3); color: #a78bfa; padding: 0.18rem 0.5rem; }
+.proj-link { font-size: 0.7rem; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: gap 0.2s; }
+.proj-link:hover { gap: 0.6rem; }
+
+.exp-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-bottom: 1rem; }
+.exp-role { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.3rem; }
+.exp-co { color: var(--accent); font-size: 0.78rem; margin-bottom: 1rem; }
+.exp-date { font-size: 0.68rem; color: var(--muted); white-space: nowrap; }
+.exp-list { list-style: none; }
+.exp-list li { font-size: 0.76rem; color: var(--muted); line-height: 1.75; padding-left: 1.1rem; position: relative; }
+.exp-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+
+.edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.5rem; }
+.edu-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; transition: border-color 0.2s; }
+.edu-card:hover { border-color: rgba(0,229,255,0.3); }
+.edu-deg { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.edu-school { font-size: 0.73rem; color: var(--muted); margin-bottom: 0.85rem; }
+.edu-year { font-size: 0.62rem; color: var(--accent); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); display: inline-block; padding: 0.2rem 0.6rem; }
+
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1rem; }
+.cert-card { background: var(--card); border: 1px solid var(--border); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: border-color 0.2s; }
+.cert-card:hover { border-color: rgba(0,229,255,0.3); }
+.cert-icon { font-size: 1.4rem; }
+.cert-name { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; }
+.cert-issuer { font-size: 0.65rem; color: var(--muted); margin-top: 0.2rem; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.contact-info p { font-size: 0.84rem; color: var(--muted); line-height: 1.85; margin-bottom: 2rem; }
+.contact-links { display: flex; flex-direction: column; gap: 0.85rem; }
+.contact-link { display: flex; align-items: center; gap: 1rem; color: var(--text); text-decoration: none; font-size: 0.78rem; padding: 1rem 1.5rem; background: var(--card); border: 1px solid var(--border); transition: border-color 0.2s, color 0.2s; }
+.contact-link:hover { border-color: var(--accent); color: var(--accent); }
+.ci { color: var(--accent); font-size: 1rem; min-width: 20px; text-align: center; }
+.contact-cta { padding: 3rem; background: var(--card); border: 1px solid var(--border); position: relative; overflow: hidden; }
+.contact-cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,255,0.04), rgba(124,58,237,0.04)); }
+.contact-cta h3 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; position: relative; }
+.contact-cta p { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; position: relative; }
+
+footer { padding: 2rem 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+footer p { font-size: 0.63rem; color: var(--muted); }
+
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero { padding-top: 7rem; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+  .hero-stats { gap: 1.5rem; }
+  .exp-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">tathagat.</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="blink"></span>&nbsp; Available for opportunities</div>
+    <h1>Machine<br><span class="grad">Learning</span><br>Engineer.</h1>
+    <p class="hero-desc">Building deep learning systems from scratch — GPT-style language models, computer vision pipelines, and production-ready AI services with PyTorch and FastAPI.</p>
+    <div class="hero-ctas">
+      <a href="https://github.com/tathagat-git" target="_blank" class="btn-primary">View GitHub →</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">57.5M</div><div class="stat-label">Model Parameters</div></div>
+      <div><div class="stat-num">150M</div><div class="stat-label">Tokens Trained</div></div>
+      <div><div class="stat-num">88%</div><div class="stat-label">CV Accuracy</div></div>
+      <div><div class="stat-num">50K+</div><div class="stat-label">Records Processed</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label">01 / Skills</div>
+  <h2 class="section-title fade-up">Technical Stack</h2>
+  <div class="skills-grid fade-up">
+    <div class="skill-item">
+      <div class="skill-cat">Languages</div>
+      <div class="skill-tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Git</span><span class="tag">Docker</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-cat">ML / NLP</div>
+      <div class="skill-tags"><span class="tag">Deep Learning</span><span class="tag">Transformers</span><span class="tag">Fine-tuning</span><span class="tag">EDA</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-cat">Libraries</div>
+      <div class="skill-tags"><span class="tag">PyTorch</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">scikit-learn</span><span class="tag">spaCy</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-cat">Infrastructure</div>
+      <div class="skill-tags"><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">JWT Auth</span><span class="tag">AWS</span><span class="tag">SSE</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label">02 / Projects</div>
+  <h2 class="section-title fade-up">Selected Work</h2>
+  <div class="projects-grid">
+    <div class="project-card fade-up">
+      <div class="proj-num">PROJECT — 01</div>
+      <div class="proj-title">MiniLLM</div>
+      <div class="proj-desc">GPT-style language model trained from scratch on 150M tokens using Wikipedia and OpenWebText.</div>
+      <ul class="proj-highlights">
+        <li>57.5M parameter transformer on single GPU with fp16 + gradient accumulation</li>
+        <li>Full pipeline: tokenizer, dataset processing, checkpointing, evaluation</li>
+        <li>FastAPI + PostgreSQL + JWT auth + email verification + real-time SSE streaming</li>
+        <li>React frontend with live streaming, chat history, guest mode, Wikipedia injection</li>
+      </ul>
+      <div class="proj-footer">
+        <div class="proj-stack"><span class="pill">PyTorch</span><span class="pill">FastAPI</span><span class="pill">React</span><span class="pill">PostgreSQL</span></div>
+        <a href="https://github.com/tathagat-git" target="_blank" class="proj-link">GitHub →</a>
+      </div>
+    </div>
+    <div class="project-card fade-up">
+      <div class="proj-num">PROJECT — 02</div>
+      <div class="proj-title">Hand2Math</div>
+      <div class="proj-desc">CNN-based computer vision model for recognizing handwritten mathematical symbols in real time.</div>
+      <ul class="proj-highlights">
+        <li>88% accuracy on handwritten math symbol classification</li>
+        <li>Custom preprocessing and training pipeline for dataset preparation</li>
+        <li>FastAPI REST endpoint for real-time model inference</li>
+      </ul>
+      <div class="proj-footer">
+        <div class="proj-stack"><span class="pill">TensorFlow</span><span class="pill">CNN</span><span class="pill">FastAPI</span><span class="pill">OpenCV</span></div>
+        <a href="https://github.com/tathagat-git" target="_blank" class="proj-link">GitHub →</a>
+      </div>
+    </div>
+    <div class="project-card fade-up">
+      <div class="proj-num">PROJECT — 03</div>
+      <div class="proj-title">Contact Extractor</div>
+      <div class="proj-desc">Web app that extracts structured contact info from PDFs, DOCX files, and images using NLP and OCR.</div>
+      <ul class="proj-highlights">
+        <li>Extracts phone numbers and emails from multiple file formats</li>
+        <li>spaCy for named entity recognition; EasyOCR for image text extraction</li>
+        <li>Deployed as FastAPI application with clean REST API endpoints</li>
+      </ul>
+      <div class="proj-footer">
+        <div class="proj-stack"><span class="pill">spaCy</span><span class="pill">EasyOCR</span><span class="pill">FastAPI</span><span class="pill">Python</span></div>
+        <a href="https://github.com/tathagat-git" target="_blank" class="proj-link">GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label">03 / Experience</div>
+  <h2 class="section-title fade-up">Work History</h2>
+  <div class="exp-card fade-up">
+    <div>
+      <div class="exp-role">Data Analyst Intern</div>
+      <div class="exp-co">PUCHO Online — Patna</div>
+      <ul class="exp-list">
+        <li>Cleaned and structured 50K+ records using Python and Excel to improve dataset usability.</li>
+        <li>Built automated Excel dashboards, reducing manual reporting work by 20%.</li>
+        <li>Conducted EDA to identify trends and root causes of data inconsistencies.</li>
+      </ul>
+    </div>
+    <div class="exp-date">May 2024 — Jun 2024</div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">04 / Education</div>
+  <h2 class="section-title fade-up">Academic Background</h2>
+  <div class="edu-grid fade-up">
+    <div class="edu-card">
+      <div class="edu-deg">MCA — Master of Computer Applications</div>
+      <div class="edu-school">Dr. A.P.J. Abdul Kalam Technical University</div>
+      <div class="edu-year">2024 – 2026</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-deg">BCA — Bachelor of Computer Applications</div>
+      <div class="edu-school">Veer Kunwar Singh University</div>
+      <div class="edu-year">2019 – 2023</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-deg">Intermediate (12th)</div>
+      <div class="edu-school">Sree Ayyappa Public School, Bokaro Steel City</div>
+      <div class="edu-year">2017 – 2018</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">05 / Certifications</div>
+  <h2 class="section-title fade-up">Credentials</h2>
+  <div class="cert-grid fade-up">
+    <div class="cert-card">
+      <div class="cert-icon">📊</div>
+      <div><div class="cert-name">Business Analyst</div><div class="cert-issuer">Simplilearn</div></div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">☁️</div>
+      <div><div class="cert-name">AWS Cloud Foundations</div><div class="cert-issuer">Amazon Web Services · Credly</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">06 / Contact</div>
+  <h2 class="section-title fade-up">Get In Touch</h2>
+  <div class="contact-grid">
+    <div class="contact-info fade-up">
+      <p>Open to early-career ML engineering roles, internships, and research collaborations. Let's build something meaningful together.</p>
+      <div class="contact-links">
+        <a href="/cdn-cgi/l/email-protection#423623362a2325233674737702252f232b2e6c212d2f" class="contact-link"><span class="ci">✉</span> <span class="__cf_email__" data-cfemail="c5b1a4b1ada4a2a4b1f3f4f085a2a8a4aca9eba6aaa8">[email&#160;protected]</span></a>
+        <a href="https://github.com/tathagat-git" target="_blank" class="contact-link"><span class="ci">⌥</span> github.com/tathagat-git</a>
+        <a href="https://www.linkedin.com/in/tathagat-tathagat3460/" target="_blank" class="contact-link"><span class="ci">↗</span> linkedin.com/in/tathagat-tathagat3460</a>
+        <a href="tel:+919471496845" class="contact-link"><span class="ci">◎</span> +91 94714 96845</a>
+      </div>
+    </div>
+    <div class="contact-cta fade-up">
+      <h3>Currently based in<br>Ghaziabad, UP.</h3>
+      <p>Available for remote roles worldwide or on-site opportunities across India.</p>
+      <a href="/cdn-cgi/l/email-protection#166277627e7771776220272356717b777f7a3875797b" class="btn-primary">Send a Message →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Tathagat. All rights reserved.</p>
+  <p>Ghaziabad, Uttar Pradesh, India</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><
